@@ -8,7 +8,11 @@ const template = `
     <title>{{title}}</title>
 </head>
 <body>
-    {{ content }}
+    {{content}}
 </body>
 </html>
 `
+
+module.exports = {
+    template
+}
