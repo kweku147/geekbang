@@ -1,6 +1,5 @@
 const { getArticle, getArticlesId, getCourseInfo, saveArticle } = require('./utils')
 const fs = require('fs')
-const { template } = require('./template')
 
 async function getArticles() {
     const ids = await getArticlesId()
@@ -9,7 +8,7 @@ async function getArticles() {
         console.log(`正在下载第${i + 1}个,ID为${ids[i].id}...`);
         const content = await getArticle(ids[i].id)
         const { article_content, article_title } = content
-        saveArticle(title, `${i}.${article_title} `, article_content, template)
+        saveArticle(title, `${i}.${article_title} `, article_content)
     }
     console.log('下载完成！');
 }

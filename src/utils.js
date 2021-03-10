@@ -1,6 +1,9 @@
 const request = require('request')
 const fs = require('fs')
 const { articleIdParam, courseInfo } = require('./config')
+const TurndownService = require('turndown')
+const turndownService = new TurndownService()
+
 
 function randomUserAgent() {
     const userAgentList = [
@@ -93,16 +96,15 @@ function getCourseInfo() {
 
 
 
-function saveArticle(title, articleTitle, content, template) {
+function saveArticle(title, articleTitle, content) {
     let reg = /[\~\:\/\*\?\"\|\\\<\>]/g
-    template = template.replace(/{{title}}/g, articleTitle)
-    template = template.replace(/{{content}}/g, content)
     articleTitle = articleTitle.replace(reg, '')
+    content = turndownService.turndown(content)
     fs.stat(title, (err, data) => {
         if (err) {
             fs.mkdirSync(title)
         } else {
-            fs.writeFileSync(`${title}/${articleTitle}.html`, template)
+            fs.writeFileSync(`${title}/${articleTitle}.md`, content)
         }
     })
 }
