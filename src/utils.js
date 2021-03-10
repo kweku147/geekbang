@@ -1,6 +1,6 @@
 const request = require('request')
 const fs = require('fs')
-const { articleIdParam, courseInfo } = require('./config')
+const { articleIdParam, courseInfoParam } = require('./config')
 const TurndownService = require('turndown')
 const turndownService = new TurndownService()
 
@@ -83,7 +83,7 @@ function getCourseInfo() {
                 "Origin": 'https://time.geekbang.org',
                 "Referer": 'https://time.geekbang.org'
             },
-            body: courseInfo
+            body: courseInfoParam
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 const res = JSON.parse(response.body)
