@@ -1,6 +1,6 @@
 const request = require('request')
 const fs = require('fs')
-const { articleIdParam, courseInfoParam } = require('./config')
+const { courseId, cookie } = require('./config')
 const TurndownService = require('turndown')
 const turndownService = new TurndownService()
 
@@ -38,7 +38,7 @@ function getArticlesId() {
                 "content-type": "application/json",
                 "Referer": "https://time.geekbang.org",
             },
-            body: articleIdParam//post参数字符串
+            body: `{ "cid": ${courseId}, "size": 500, "prev": 0, "order": "earliest", "sample": false }`
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 const res = JSON.parse(response.body)
@@ -59,7 +59,7 @@ function getArticle(id) {
                 "Referer": 'https://time.geekbang.org',
                 'User-Agent': randomUserAgent(),
                 'X-Real-IP': randomIpAddress(),
-                "cookie": "LF_ID=1587952689976-7701915-6340742; _ga=GA1.2.1228968440.1587952690; _gid=GA1.2.597630278.1615216688; GCID=a736378-dd12109-3fbbfe9-c2b45d1; GRID=a736378-dd12109-3fbbfe9-c2b45d1; acw_tc=2760828316153433878708445e92071b0f2c6fd91196f14a25f00b47aa4acd; gksskpitn=ac4182f4-b8fd-48f3-b596-bd62f6fdc106; GCESS=BQoEAAAAAAUEAAAAAAgBAwkBAQYEviqT9gEIXrMgAAAAAAACBCwvSGALAgUAAwQsL0hgBAQALw0ABwSyLr1cDAEB; Hm_lvt_59c4ff31a9ee6263811b23eb921a5083=1615303739,1615304646,1615343384,1615343401; Hm_lvt_022f847c4e3acd44d4a2481d9187f1e6=1615303739,1615304646,1615343384,1615343401; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%222143070%22%2C%22first_id%22%3A%22178179ae2b3cda-0dbcd0c6d788-53e356a-2304000-178179ae2b4c70%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E5%BC%95%E8%8D%90%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC%22%2C%22%24latest_referrer%22%3A%22https%3A%2F%2Faccount.infoq.cn%2F%22%2C%22%24latest_landing_page%22%3A%22https%3A%2F%2Ftime.geekbang.org%2Fdashboard%2Fusercenter%22%2C%22%24latest_utm_source%22%3A%22time_app%22%2C%22%24latest_utm_medium%22%3A%22winterzhuanlantuijian%22%2C%22%24latest_utm_term%22%3A%22winterzhuanlantuijian%22%7D%2C%22%24device_id%22%3A%22173d7245e71126-01e0a3df09850c-3323765-2304000-173d7245e72a6f%22%7D; SERVERID=3431a294a18c59fc8f5805662e2bd51e|1615343498|1615343387; _gat=1; Hm_lpvt_59c4ff31a9ee6263811b23eb921a5083=1615343495; gk_process_ev={%22count%22:12%2C%22target%22:%22%22%2C%22utime%22:1615343400245%2C%22referrer%22:%22https://time.geekbang.org/%22%2C%22referrerTarget%22:%22%22}; Hm_lpvt_022f847c4e3acd44d4a2481d9187f1e6=1615343495",
+                "cookie": cookie,
                 "Connection": 'keep-alive',
                 'Content-Type': 'application/json',
             },
@@ -76,14 +76,14 @@ function getArticle(id) {
 function getCourseInfo() {
     return new Promise((resolve, reject) => {
         request({
-            url: 'https://time.geekbang.org/serv/v3/column/info ',
+            url: 'https://time.geekbang.org/serv/v3/column/info',
             method: "POST",
             headers: {
                 "content-type": "application/json",
                 "Origin": 'https://time.geekbang.org',
                 "Referer": 'https://time.geekbang.org'
             },
-            body: courseInfoParam
+            body: `{"product_id":${courseId}}`
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 const res = JSON.parse(response.body)
