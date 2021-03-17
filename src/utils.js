@@ -97,7 +97,7 @@ function getCourseInfo() {
 
 
 function saveArticle(title, articleTitle, content) {
-    let reg = /[\~\:\/\*\?\"\|\\\<\>]/g
+    let reg = /[\~\:\/\*\?\"\|\\\<\>\s]/g
     articleTitle = articleTitle.replace(reg, '')
     content = turndownService.turndown(content)
     fs.stat(title, (err, data) => {
